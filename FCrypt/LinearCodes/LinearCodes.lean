@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Tactic
+import Mathlib.Algebra.Field.Basic
 
 section
 
@@ -35,17 +36,23 @@ theorem zero_def {F : Type} [Field F] {n : ℕ} :
 --   ∀ (v : Vec F n), Subtype.val v = Subtype.val (v + 0)
 --     | Subtype.val [] => by simp
 
--- There is a problem with refl.
+variable {F : Type} [Field F] {n : ℕ}
 
--- instance VecAddCommGroup {F : Type} [Field F] {n : ℕ} : AddCommGroup (Vec F n) :=
+def nsmul' (m: ℕ) (v : Vec F n) : Vec F n := ⟨ List.map (fun x => n * x) v.val, by sorry ⟩
 
---   { zero_add := by sorry
---     add_assoc := by sorry
---     nsmul := by sorry
---     add_zero := by sorry
---     zsmul := by sorry
---     neg_add_cancel := by sorry
---     add_comm := by sorry }
+instance : AddCommGroup (Vec F n) where
+  zero_add := by sorry
+  add_zero := by sorry
+  add_assoc := by sorry
+  add_comm := by sorry
+  neg_add_cancel := by sorry
+  sub_eq_add_neg := by sorry
+  nsmul := nsmul'
+  zsmul n v := zsmulRec nsmul' n v
+  nsmul_zero := by sorry
+  nsmul_succ := by sorry
+  zsmul_zero' := by sorry
+  zsmul_succ' := by sorry
 
 end
 
